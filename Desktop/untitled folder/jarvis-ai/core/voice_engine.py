@@ -51,6 +51,56 @@ class VoiceEngine:
             except Exception:
                 return None
 
+    def get_install_instructions(self) -> str:
+        """Return platform-specific instructions to enable voice input."""
+        import platform
+
+        plat = platform.system().lower()
+        instructions = [
+            "Voice backends not found. You can enable voice input by installing one of the audio backends:",
+            "\nRecommended: sounddevice (easier on modern systems).\n",
+        ]
+
+        if 'darwin' in plat or 'mac' in plat:
+            instructions += [
+                "macOS (Homebrew):",
+                "  brew install libsndfile",
+                "  # then inside your virtualenv:",
+                "  pip install sounddevice",
+                "\nOr for PyAudio (alternative):",
+                "  brew install portaudio",
+                "  pip install pyaudio",
+            ]
+        elif 'linux' in plat:
+            instructions += [
+                "Debian/Ubuntu:",
+                "  sudo apt update && sudo apt install libsndfile1 portaudio19-dev python3-dev build-essential",
+                "  pip install sounddevice",
+                "\nOr for PyAudio:",
+                "  pip install pyaudio",
+            ]
+        elif 'windows' in plat:
+            instructions += [
+                "Windows:",
+                "  # Recommended: use pipwin to install PyAudio binary",
+                "  pip install pipwin",
+                "  pipwin install pyaudio",
+                "  # Or try sounddevice:",
+                "  pip install sounddevice",
+            ]
+        else:
+            instructions += [
+                "Generic instructions:",
+                "  pip install sounddevice",
+                "  # If that fails, install system audio dependency (libsndfile/portaudio) first",
+            ]
+
+        instructions += [
+            "\nAfter installing, activate your virtualenv (if used) and re-run JARVIS:\n  source venv/bin/activate\n  python main.py",
+            "\nTo verify installation from Python:\n  python -c \"from core.voice_engine import VoiceEngine; v=VoiceEngine(); print('sr_available=', v.sr_available, 'audio_backend=', v.audio_backend)\"",
+        ]
+
+        return "\n".join(instructions)
     def speak(self, text: str) -> None:
         """Convert text to speech"""
         try:

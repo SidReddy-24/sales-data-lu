@@ -44,6 +44,13 @@ class JARVIS:
         if not self.voice_engine.audio_backend:
             self.voice_engine.speak("Voice input not available. Switching to text mode. Type your commands.")
             print("Voice input not available — entering text mode. Type 'exit' to quit.")
+            # Provide actionable, platform-specific install instructions to enable voice
+            try:
+                help_text = self.voice_engine.get_install_instructions()
+                print('\n=== How to enable voice input ===\n')
+                print(help_text)
+            except Exception as e:
+                self.logger.debug(f"Could not generate audio install instructions: {e}")
             while self.running:
                 try:
                     user_input = input("You: ")
