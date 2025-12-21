@@ -65,8 +65,17 @@ class JARVIS:
                     break
 
                 self.logger.info(f"User (text): {user_input}")
-                response = self.process_command(user_input)
-                self.voice_engine.speak(response)
+                try:
+                    response = self.process_command(user_input)
+                except Exception as e:
+                    self.logger.error(f"Error processing command: {e}", exc_info=True)
+                    response = "Sorry, I couldn't process that. Please try again."
+
+                try:
+                    self.voice_engine.speak(response)
+                except Exception as e:
+                    self.logger.error(f"Error speaking response: {e}", exc_info=True)
+
                 self.save_interaction(user_input, response)
 
             return
@@ -77,8 +86,17 @@ class JARVIS:
             
             if user_input:
                 self.logger.info(f"User: {user_input}")
-                response = self.process_command(user_input)
-                self.voice_engine.speak(response)
+                try:
+                    response = self.process_command(user_input)
+                except Exception as e:
+                    self.logger.error(f"Error processing command: {e}", exc_info=True)
+                    response = "Sorry, I couldn't process that. Please try again."
+
+                try:
+                    self.voice_engine.speak(response)
+                except Exception as e:
+                    self.logger.error(f"Error speaking response: {e}", exc_info=True)
+
                 self.save_interaction(user_input, response)
     
     def process_command(self, user_input: str) -> str:
