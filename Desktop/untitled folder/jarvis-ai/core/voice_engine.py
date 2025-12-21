@@ -1,0 +1,109 @@
+"""
+Voice Recognition and Text-to-Speech Engine
+- Detects available audio backends: PyAudio or sounddevice
+- Falls back to text input when no audio backend is available
+"""
+import threading
+from typing import Callable, Optional
+
+import speech_recognition as sr
+import pyttsx3
+
+class VoiceEngine:
+    def __init__(self, rate=150, volume=0.9):
+        self.recognizer = sr.Recognizer()
+        self.engine = pyttsx3.init()
+        self.engine.setProperty('rate', rate)
+        self.engine.setProperty('volume', volume)
+        self.listening = False
+
+        # Detect audio backend availability
+        self.audio_backend = self._detect_audio_backend()
+
+    def _detect_audio_backend(self) -> Optional[str]:
+        """Return 'pyaudio', 'sounddevice', or None if no backend available."""
+        try:
+            import pyaudio  # type: ignore
+            return 'pyaudio'
+        except Exception:
+            # Try sounddevice as a fallback
+            try:
+                import sounddevice  # type: ignore
+                return 'sounddevice'
+            except Exception:
+                return None
+
+    def speak(self, text: str) -> None:
+        """Convert text to speech"""
+        try:
+            self.engine.say(text)
+            self.engine.runAndWait()
+        except Exception as e:
+            # pyttsx3 can raise "run loop already started" in some GUI contexts — handle gracefully
+            try:
+                # Try a safer approach: start the engine again
+                self.engine.stop()
+                self.engine.say(text)
+                self.engine.runAndWait()
+            except Exception:
+                print(f"Error in text-to-speech: {e}")
+
+    def listen(self, timeout: int = 30) -> Optional[str]:
+        """Listen to user input via microphone or fallback to None if unavailable."""
+        if self.audio_backend == 'pyaudio':
+            try:
+                with sr.Microphone() as source:
+                    audio = self.recognizer.listen(source, timeout=timeout)
+                    text = self.recognizer.recognize_google(audio)
+                    return text.lower()
+            except sr.UnknownValueError:
+                return None
+            except sr.RequestError:
+                self.speak("Sorry, I cannot access the speech recognition service.")
+                return None
+            except Exception as e:
+                print(f"Audio error (pyaudio): {e}")
+                return None
+
+        elif self.audio_backend == 'sounddevice':
+            # Record using sounddevice and convert to AudioData for recognition
+            try:
+                import sounddevice as sd  # type: ignore
+                import numpy as np
+
+                sample_rate = 16000
+                duration = min(timeout, 10)  # cap recording to 10s for safety
+                sd.default.samplerate = sample_rate
+                sd.default.channels = 1
+
+                recording = sd.rec(int(duration * sample_rate), dtype='float32')
+                sd.wait()
+
+                # Convert float32 [-1,1] to int16
+                audio_data = (recording.flatten() * 32767).astype('<i2').tobytes()
+                audio = sr.AudioData(audio_data, sample_rate, 2)
+                text = self.recognizer.recognize_google(audio)
+                return text.lower()
+            except sr.UnknownValueError:
+                return None
+            except sr.RequestError:
+                self.speak("Sorry, I cannot access the speech recognition service.")
+                return None
+            except Exception as e:
+                print(f"Audio error (sounddevice): {e}")
+                return None
+
+        else:
+            # No audio backend available
+            return None
+
+    def listen_async(self, callback: Callable[[str], None], timeout: int = 30) -> None:
+        """Listen asynchronously"""
+        thread = threading.Thread(target=self._listen_thread, args=(callback, timeout))
+        thread.daemon = True
+        thread.start()
+
+    def _listen_thread(self, callback: Callable[[str], None], timeout: int) -> None:
+        result = self.listen(timeout)
+        if result:
+            callback(result)
