@@ -15,7 +15,7 @@ def _warn_if_not_using_venv():
     # show a friendly hint to the user.
     venv_dir = Path(__file__).parent / 'venv'
     if venv_dir.exists() and 'VIRTUAL_ENV' not in os.environ:
-        print('⚠️  Notice: a virtual environment is present at "./venv" but it doesn't look like it's activated.')
+        print("⚠️  Notice: a virtual environment is present at './venv' but it doesn't look like it's activated.")
         print('Recommended: activate it and re-run to ensure all dependencies are available:')
         print('  source venv/bin/activate')
         print('Or run directly with the venv python:')
