@@ -15,7 +15,12 @@ except Exception:
     sr = None  # type: ignore
     SR_AVAILABLE = False
 
-import pyttsx3
+try:
+    import pyttsx3
+    TTS_AVAILABLE = True
+except Exception:
+    pyttsx3 = None  # type: ignore
+    TTS_AVAILABLE = False
 
 class VoiceEngine:
     def __init__(self, rate=150, volume=0.9):
@@ -26,9 +31,15 @@ class VoiceEngine:
         else:
             self.recognizer = None
 
-        self.engine = pyttsx3.init()
-        self.engine.setProperty('rate', rate)
-        self.engine.setProperty('volume', volume)
+        # Initialize TTS engine if available, otherwise fall back to printing
+        self.engine = None
+        if TTS_AVAILABLE:
+            try:
+                self.engine = pyttsx3.init()
+                self.engine.setProperty('rate', rate)
+                self.engine.setProperty('volume', volume)
+            except Exception:
+                self.engine = None
         self.listening = False
 
         # Detect audio backend availability
@@ -103,6 +114,11 @@ class VoiceEngine:
         return "\n".join(instructions)
     def speak(self, text: str) -> None:
         """Convert text to speech"""
+        if not self.engine:
+            # TTS unavailable; fallback to printing the response
+            print(f"JARVIS (TTS unavailable) > {text}")
+            return
+
         try:
             self.engine.say(text)
             self.engine.runAndWait()
