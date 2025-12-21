@@ -129,7 +129,7 @@ class VoiceEngine:
                     return text.lower()
             except Exception as e:
                 # generic catch — includes UnknownValueError / RequestError
-                print(f"Audio error (pyaudio): {e}")
+                print(f"Audio error (pyaudio): {e!r}")
                 return None
 
         elif self.audio_backend == 'sounddevice':
@@ -150,7 +150,7 @@ class VoiceEngine:
                 text = self.recognizer.recognize_google(audio)
                 return text.lower()
             except Exception as e:
-                print(f"Audio error (sounddevice): {e}")
+                print(f"Audio error (sounddevice): {e!r}")
                 return None
 
         else:
