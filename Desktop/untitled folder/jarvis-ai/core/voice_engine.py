@@ -2,16 +2,30 @@
 Voice Recognition and Text-to-Speech Engine
 - Detects available audio backends: PyAudio or sounddevice
 - Falls back to text input when no audio backend is available
+- Handles missing 'speech_recognition' import gracefully
 """
 import threading
 from typing import Callable, Optional
 
-import speech_recognition as sr
+# speech_recognition may not be installed in the interpreter running this script
+try:
+    import speech_recognition as sr  # type: ignore
+    SR_AVAILABLE = True
+except Exception:
+    sr = None  # type: ignore
+    SR_AVAILABLE = False
+
 import pyttsx3
 
 class VoiceEngine:
     def __init__(self, rate=150, volume=0.9):
-        self.recognizer = sr.Recognizer()
+        # sr may be None if not installed
+        self.sr_available = SR_AVAILABLE
+        if self.sr_available:
+            self.recognizer = sr.Recognizer()
+        else:
+            self.recognizer = None
+
         self.engine = pyttsx3.init()
         self.engine.setProperty('rate', rate)
         self.engine.setProperty('volume', volume)
@@ -22,6 +36,10 @@ class VoiceEngine:
 
     def _detect_audio_backend(self) -> Optional[str]:
         """Return 'pyaudio', 'sounddevice', or None if no backend available."""
+        if not self.sr_available:
+            # speech_recognition not installed — can't use audio backends
+            return None
+
         try:
             import pyaudio  # type: ignore
             return 'pyaudio'
@@ -41,7 +59,7 @@ class VoiceEngine:
         except Exception as e:
             # pyttsx3 can raise "run loop already started" in some GUI contexts — handle gracefully
             try:
-                # Try a safer approach: start the engine again
+                # Try a safer approach: restart the engine
                 self.engine.stop()
                 self.engine.say(text)
                 self.engine.runAndWait()
@@ -50,26 +68,23 @@ class VoiceEngine:
 
     def listen(self, timeout: int = 30) -> Optional[str]:
         """Listen to user input via microphone or fallback to None if unavailable."""
+        if not self.sr_available:
+            return None
+
         if self.audio_backend == 'pyaudio':
             try:
                 with sr.Microphone() as source:
                     audio = self.recognizer.listen(source, timeout=timeout)
                     text = self.recognizer.recognize_google(audio)
                     return text.lower()
-            except sr.UnknownValueError:
-                return None
-            except sr.RequestError:
-                self.speak("Sorry, I cannot access the speech recognition service.")
-                return None
             except Exception as e:
+                # generic catch — includes UnknownValueError / RequestError
                 print(f"Audio error (pyaudio): {e}")
                 return None
 
         elif self.audio_backend == 'sounddevice':
-            # Record using sounddevice and convert to AudioData for recognition
             try:
                 import sounddevice as sd  # type: ignore
-                import numpy as np
 
                 sample_rate = 16000
                 duration = min(timeout, 10)  # cap recording to 10s for safety
@@ -84,11 +99,6 @@ class VoiceEngine:
                 audio = sr.AudioData(audio_data, sample_rate, 2)
                 text = self.recognizer.recognize_google(audio)
                 return text.lower()
-            except sr.UnknownValueError:
-                return None
-            except sr.RequestError:
-                self.speak("Sorry, I cannot access the speech recognition service.")
-                return None
             except Exception as e:
                 print(f"Audio error (sounddevice): {e}")
                 return None
