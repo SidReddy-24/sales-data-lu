@@ -1,0 +1,810 @@
+@import "tailwindcss";
+
+/* LetsUpgrade Theme - Orange/Coral Palette */
+:root {
+  --primary-orange: #FF6B35;
+  --primary-coral: #FF8C5A;
+  --primary-light: #FFF4F0;
+  --primary-gradient: linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%);
+  --accent-ring: rgba(255, 107, 53, 0.1);
+}
+
+/* Custom styles for LinkedIn Profile Analyzer */
+
+/* ========== KEYFRAME ANIMATIONS ========== */
+
+/* Floating animation - smooth bounce */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-12px) scale(1.02);
+  }
+}
+
+/* Gentle pulse glow */
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 10px 40px -10px rgba(255, 107, 53, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 20px 60px -10px rgba(255, 107, 53, 0.6);
+  }
+}
+
+/* Slide up with fade */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide in from left */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale in */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Fade in */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Spin slow */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Pulse soft */
+@keyframes pulse-soft {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}
+
+/* Progress bar fill */
+@keyframes progress-fill-bar {
+  from {
+    width: 0%;
+  }
+}
+
+/* Score ring fill */
+@keyframes progress-fill {
+  from {
+    stroke-dashoffset: 283;
+  }
+}
+
+/* Shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Bounce in */
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  70% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Ring pulse */
+@keyframes ring-pulse {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+}
+
+/* ========== ANIMATION CLASSES ========== */
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 3s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Staggered children animations */
+.stagger-children>* {
+  opacity: 0;
+  animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stagger-children>*:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.stagger-children>*:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.stagger-children>*:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.stagger-children>*:nth-child(4) {
+  animation-delay: 0.25s;
+}
+
+.stagger-children>*:nth-child(5) {
+  animation-delay: 0.3s;
+}
+
+.stagger-children>*:nth-child(6) {
+  animation-delay: 0.35s;
+}
+
+.stagger-children>*:nth-child(7) {
+  animation-delay: 0.4s;
+}
+
+.stagger-children>*:nth-child(8) {
+  animation-delay: 0.45s;
+}
+
+/* Score ring animation */
+.progress-ring-circle {
+  animation: progress-fill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Progress bar animation */
+.progress-bar-animated {
+  animation: progress-fill-bar 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ========== DECORATIVE ELEMENTS ========== */
+
+/* Decorative circular rings */
+.decorative-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 107, 53, 0.12);
+  pointer-events: none;
+  animation: ring-pulse 4s ease-in-out infinite;
+}
+
+.decorative-ring-1 {
+  width: 500px;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.decorative-ring-2 {
+  width: 700px;
+  height: 700px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 0.5s;
+}
+
+.decorative-ring-3 {
+  width: 900px;
+  height: 900px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 1s;
+  opacity: 0.5;
+}
+
+/* ========== BUTTON STYLES ========== */
+
+/* Orange gradient button */
+.btn-primary-orange {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%);
+  box-shadow: 0 10px 30px -10px rgba(255, 107, 53, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary-orange:hover {
+  background: linear-gradient(135deg, #E55A2B 0%, #FF7A45 100%);
+  box-shadow: 0 15px 40px -10px rgba(255, 107, 53, 0.65);
+  transform: translateY(-2px);
+}
+
+.btn-primary-orange:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 25px -10px rgba(255, 107, 53, 0.5);
+}
+
+/* Secondary orange button - white background with orange border */
+.btn-secondary-orange {
+  background: white;
+  color: #FF6B35;
+  border: 2px solid #FF6B35;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary-orange:hover {
+  background: #FFF4F0;
+  border-color: #FF8C5A;
+  color: #FF8C5A;
+  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.15);
+  transform: translateY(-2px);
+}
+
+.btn-secondary-orange:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(255, 107, 53, 0.1);
+}
+
+/* ========== CARD STYLES ========== */
+
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== LOADING ICON ANIMATION ========== */
+
+.loading-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Smooth number transition */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Glass effect for loading card */
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+}
+
+/* Gradient text shimmer */
+@keyframes text-shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.text-shimmer {
+  background: linear-gradient(90deg, #FF6B35, #FF8C5A, #FF6B35);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer 2s linear infinite;
+}
+
+/* ========== PREMIUM LOADING ANIMATION STYLES ========== */
+
+/* Loading Animation Overlay */
+.loading-animation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Main Card */
+.loading-animation-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 32px;
+  padding: 60px 80px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08),
+    0 8px 16px rgba(0, 0, 0, 0.04);
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: cardSlideUp 0.5s ease-out;
+}
+
+@keyframes cardSlideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Subtle background gradient effect */
+.loading-animation-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle,
+      rgba(255, 107, 53, 0.03) 0%,
+      transparent 70%);
+  animation: rotate 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Rocket Container */
+.rocket-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 30px;
+}
+
+/* Rocket Glow Effect */
+.rocket-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle,
+      rgba(255, 107, 53, 0.4) 0%,
+      rgba(255, 107, 53, 0.2) 40%,
+      transparent 70%);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Rocket Icon */
+.rocket-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
+  animation: floatRocket 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes floatRocket {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateY(0px);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) translateY(-10px);
+  }
+}
+
+/* Title */
+.loading-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
+  animation: titleSlide 0.5s ease-out;
+}
+
+@keyframes titleSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Subtitle */
+.loading-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0 0 40px 0;
+  font-weight: 400;
+  animation: subtitleFade 0.5s ease-out 0.1s both;
+}
+
+@keyframes subtitleFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Progress Bar Container */
+.progress-bar-container {
+  margin: 0 0 30px 0;
+  animation: progressBarSlide 0.5s ease-out 0.2s both;
+}
+
+@keyframes progressBarSlide {
+  from {
+    opacity: 0;
+    transform: scaleX(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* Progress Bar Track */
+.progress-bar-track {
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Progress Bar Fill */
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6b35 0%, #ff8c42 50%, #ffa94d 100%);
+  border-radius: 100px;
+  transition: width 0.3s ease-out;
+  position: relative;
+  box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+}
+
+/* Shimmer effect on progress bar */
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent);
+  animation: shimmerProgress 2s infinite;
+}
+
+@keyframes shimmerProgress {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+/* Stage Icons Container */
+.stage-icons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 40px 0;
+  animation: iconsSlide 0.5s ease-out 0.3s both;
+}
+
+@keyframes iconsSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Individual Stage Icon */
+.stage-icon {
+  width: 56px;
+  height: 56px;
+  background: #f3f4f6;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.stage-icon.active {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+  transform: scale(1.1);
+}
+
+.stage-icon span {
+  filter: grayscale(100%);
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.stage-icon.active span {
+  filter: grayscale(0%);
+  opacity: 1;
+  animation: iconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes iconPop {
+  0% {
+    transform: scale(0.5);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Progress Percentage */
+.progress-percentage {
+  font-size: 72px;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0 0 16px 0;
+  letter-spacing: -2px;
+  animation: percentageCount 0.5s ease-out 0.4s both;
+  background: linear-gradient(135deg, #1a1a1a 0%, #4b5563 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes percentageCount {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Loading Tagline */
+.loading-tagline {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #9ca3af;
+  margin: 0;
+  text-transform: uppercase;
+  animation: taglineFade 0.5s ease-out 0.5s both;
+}
+
+@keyframes taglineFade {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .loading-animation-card {
+    padding: 40px 30px;
+    border-radius: 24px;
+  }
+
+  .loading-title {
+    font-size: 24px;
+  }
+
+  .loading-subtitle {
+    font-size: 14px;
+  }
+
+  .progress-percentage {
+    font-size: 56px;
+  }
+
+  .stage-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .rocket-container {
+    width: 80px;
+    height: 80px;
+  }
+
+  .rocket-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .rocket-glow {
+    width: 80px;
+    height: 80px;
+  }
+}
