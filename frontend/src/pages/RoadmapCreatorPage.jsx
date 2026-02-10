@@ -80,7 +80,7 @@ const RoadmapCreatorPage = () => {
         setShareUrl('');
         setPendingData(null);
         setIsDataReady(false);
-        window.history.pushState({}, '', '/');
+        window.history.pushState({}, '', '/career-roadmap-LUWP');
     };
 
     const handleLoadingComplete = () => {
@@ -89,33 +89,14 @@ const RoadmapCreatorPage = () => {
             setShareUrl(pendingData.shareUrl || '');
             setCreatorState(STATES.RESULTS);
             if (pendingData.id) {
-                const slugify = (text) => {
-                    return text
-                        .toString()
-                        .toLowerCase()
-                        .trim()
-                        .replace(/\s+/g, '-')
-                        .replace(/[^\w-]+/g, '')
-                        .replace(/--+/g, '-');
-                };
-                const userSlug = slugify(pendingData.leadName || 'candidate');
-                window.history.pushState({}, '', `/career-roadmap-${userSlug}-userid=${pendingData.id}`);
+                window.history.pushState({}, '', `/career-roadmap-LUWP?roadmapId=${pendingData.id}`);
             }
         }
     };
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        let roadmapId = params.get('roadmapId');
-
-        // Check path for roadmapId if not in query params (for new URL format)
-        if (!roadmapId) {
-            const pathParts = window.location.pathname.split('userid=');
-            if (pathParts.length > 1) {
-                roadmapId = pathParts[1];
-            }
-        }
-
+        const roadmapId = params.get('roadmapId');
         if (!roadmapId) return;
 
         setCreatorState(STATES.LOADING);
@@ -126,7 +107,7 @@ const RoadmapCreatorPage = () => {
                 if (data.success) {
                     setRoadmapResult(data.data);
                     setCreatorState(STATES.RESULTS);
-                    setShareUrl(window.location.href);
+                    setShareUrl(`${window.location.origin}/career-roadmap-LUWP?roadmapId=${roadmapId}`);
                 } else {
                     setCreatorError(data.error || 'Roadmap not found');
                     setCreatorState(STATES.ERROR);

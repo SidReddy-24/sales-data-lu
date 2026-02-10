@@ -38,7 +38,7 @@ function App() {
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<WelcomePage />} />
-              <Route path="/career-roadmap-:slug" element={<RoadmapCreatorPage />} />
+              <Route path="/career-roadmap-LUWP" element={<RoadmapCreatorPage />} />
             </Routes>
           </Suspense>
         </main>

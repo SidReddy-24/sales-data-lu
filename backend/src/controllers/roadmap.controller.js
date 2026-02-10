@@ -184,19 +184,9 @@ const generateRoadmap = async (req, res) => {
       data: roadmapData,
     });
 
-    const baseUrl = process.env.PUBLIC_BASE_URL || 'http://localhost:5173';
-    const slugify = (text) => {
-      return text
-        .toString()
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '-')     // Replace spaces with -
-        .replace(/[^\w-]+/g, '')   // Remove all non-word chars
-        .replace(/--+/g, '-');     // Replace multiple - with single -
-    };
-
-    const userSlug = slugify(resolvedName);
-    const shareUrl = `${baseUrl}/career-roadmap-${userSlug}-userid=${doc._id}`;
+    const baseUrl =
+      process.env.PUBLIC_BASE_URL || 'http://localhost:5173';
+    const shareUrl = `${baseUrl}/career-roadmap-LUWP?roadmapId=${doc._id}`;
 
     // Return analyzer results so frontend can sync
     const analyzerResults = {
@@ -216,7 +206,6 @@ const generateRoadmap = async (req, res) => {
       success: true,
       id: doc._id,
       shareUrl,
-      leadName: resolvedName,
       data: roadmapData,
       analyzerResults // For automatic population of Analyzer tool
     });
